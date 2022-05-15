@@ -36,9 +36,9 @@
       <p>
         My name is <b>{{ name }}</b> and I'm <b> {{ age }}</b> years old.
       </p>
-      <p>In 10 years I will be <b>46</b>.</p>
-      <p>My name is <b>5</b> characters long.</p>
-      <p>My name in uppercase is <b>DANNY</b>.</p>
+      <p>In 10 years I will be <b>{{ agePlusTen}}</b>.</p>
+      <p>My name is <b>{{ name.length }}</b> characters long.</p>
+      <p>My name in uppercase is <b> {{ name | uppercase }}</b>.</p>
     </div>
     <div class="no-details">
       <p>Please enter a name and age.</p>
@@ -53,7 +53,19 @@ export default {
       name: "",
       age: null
     };
-  }
+  },
+
+	computed: {
+		agePlusTen() {
+			return parseInt(this.age) +10
+		}
+	},
+
+	filters: {
+		uppercase(value) {
+			return value.toUpperCase()
+			}
+	},
 };
 </script>
 
