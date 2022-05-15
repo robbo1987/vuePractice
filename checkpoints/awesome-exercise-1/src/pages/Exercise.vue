@@ -20,27 +20,43 @@
     <div class="form q-mb-lg">
       <div class="row q-mb-md">
         <label>Name:</label>
-        <input v-model="name" type="text" />
-        <label class="error">Please enter 15 characters or less</label>
+        <input v-model="name" type="text"
+				:class="{ error: nameIsInvalid}"
+				 />
+        <label 
+					v-show="nameIsInvalid" 
+					class="error"
+          >Please enter 15 characters or less</label
+        >
       </div>
       <div class="row q-mb-md">
         <label>Age:</label>
         <input v-model="age" type="number" />
-        <label class="error">Please enter an age between 1 - 100</label>
+        <label v-show="ageIsInvalid" class="error"
+          >Please enter an age between 1 - 100</label
+        >
       </div>
       <div class="row">
-        <button>Generate Random Person</button>
+        <button @click = "generateRandomPerson">Generate Random Person</button>
       </div>
     </div>
-    <div class="description q-mb-lg">
+    <div v-if="name && age" class="description q-mb-lg">
       <p>
         My name is <b>{{ name }}</b> and I'm <b> {{ age }}</b> years old.
       </p>
-      <p>In 10 years I will be <b>{{ agePlusTen}}</b>.</p>
-      <p>My name is <b>{{ name.length }}</b> characters long.</p>
-      <p>My name in uppercase is <b> {{ name | uppercase }}</b>.</p>
+      <p>
+        In 10 years I will be <b>{{ agePlusTen }}</b
+        >.
+      </p>
+      <p>
+        My name is <b>{{ name.length }}</b> characters long.
+      </p>
+      <p>
+        My name in uppercase is <b> {{ name | uppercase }}</b
+        >.
+      </p>
     </div>
-    <div class="no-details">
+    <div v-else class="no-details">
       <p>Please enter a name and age.</p>
     </div>
   </q-page>
@@ -51,22 +67,41 @@ export default {
   data() {
     return {
       name: "",
-      age: null
+      age: null,
+			nameArray:['debra','jack','jill','enzo','genesis']
     };
   },
 
-	computed: {
-		agePlusTen() {
-			return parseInt(this.age) +10
-		}
+computed: {
+    agePlusTen() {
+      return parseInt(this.age) + 10;
+    },
+    ageIsInvalid() {
+      if (this.age < 1 || this.age > 100) return true;
+      else return false;
+    },
+    nameIsInvalid() {
+      if (this.name.length > 15) return true;
+      else return false;
+    }
 	},
 
-	filters: {
-		uppercase(value) {
-			return value.toUpperCase()
+	methods: {
+		generateRandomPerson() {
+				this.name = this.nameArray[Math.floor(Math.random() * this.nameArray.length)]
+				this.age = Math.floor(Math.random() * 99 + 1)
 			}
-	},
-};
+  },
+
+  filters: {
+    uppercase(value) {
+      return value.toUpperCase();
+    }
+  },
+	mounted() {
+		this.generateRandomPerson()
+	}
+}
 </script>
 
 <style>
